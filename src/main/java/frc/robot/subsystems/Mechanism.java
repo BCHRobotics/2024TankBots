@@ -51,7 +51,7 @@ public class Mechanism extends SubsystemBase {
   private boolean blueTrue;
   private boolean greenTrue;
 
-  private boolean nodeDetected;
+  private boolean noteDetected;
 
   /** Creates a new Mechanism. */
   public Mechanism() {
@@ -316,12 +316,12 @@ public class Mechanism extends SubsystemBase {
     SmartDashboard.putBoolean("Green Detected", greenTrue);
     SmartDashboard.putBoolean("Red Detected", redTrue);
     
-    SmartDashboard.putBoolean("Node Detected",nodeDetected);
+    SmartDashboard.putBoolean("Note Detected",noteDetected);
 
     redTrue = detectedColor.red > 0.5;
     blueTrue = detectedColor.blue > 0.5;
     greenTrue = detectedColor.green > 0.5;
-    nodeDetected = detectedColor.red > 0.34 && detectedColor.green > 0.35;
+    noteDetected = detectedColor.red > 0.34 && detectedColor.green > 0.35;
     
   }
 
