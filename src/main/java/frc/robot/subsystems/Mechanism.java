@@ -4,32 +4,39 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkBase.IdleMode;
+import com.revrobotics.CANSparkBase.SoftLimitDirection;
+import com.revrobotics.CANSparkLowLevel.MotorType;
+// Import required libraries
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ColorSensorV3;
+import com.revrobotics.SparkAbsoluteEncoder;
+import com.revrobotics.SparkAbsoluteEncoder.Type;
+import com.revrobotics.SparkPIDController.AccelStrategy;
+import java.lang.Math;
+
+import edu.wpi.first.wpilibj.DigitalOutput;
+// Additional Libraries
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 // Import required classes
 import frc.robot.Constants.MECHANISM;
 import frc.robot.Constants.MISC;
 import frc.robot.util.control.ArmPresets;
 import frc.robot.util.control.SparkMaxPID;
 
-// Import required libraries
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkAbsoluteEncoder;
-import com.revrobotics.CANSparkBase.IdleMode;
-import com.revrobotics.CANSparkBase.SoftLimitDirection;
-import com.revrobotics.CANSparkLowLevel.MotorType;
-import com.revrobotics.SparkAbsoluteEncoder.Type;
-import com.revrobotics.SparkPIDController.AccelStrategy;
-
-import edu.wpi.first.wpilibj.DigitalOutput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-
 public class Mechanism extends SubsystemBase {
   private final CANSparkMax shoulderMotor = new CANSparkMax(MECHANISM.SHOULDER_ID, MotorType.kBrushless);
   private final CANSparkMax wristMotor = new CANSparkMax(MECHANISM.WRIST_ID, MotorType.kBrushless);
   private final CANSparkMax clawMotor = new CANSparkMax(MECHANISM.CLAW_ID, MotorType.kBrushless);
+
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
   private final SparkAbsoluteEncoder shoulderEncoder;
   private final SparkAbsoluteEncoder wristEncoder;
@@ -39,6 +46,12 @@ public class Mechanism extends SubsystemBase {
 
   private final DigitalOutput coneLED;
   private final DigitalOutput cubeLED;
+
+  private boolean redTrue;
+  private boolean blueTrue;
+  private boolean greenTrue;
+
+  private boolean nodeDetected;
 
   /** Creates a new Mechanism. */
   public Mechanism() {
@@ -293,5 +306,24 @@ public class Mechanism extends SubsystemBase {
 
     SmartDashboard.putBoolean("Cube Request", this.cubeLED.get());
     SmartDashboard.putBoolean("Cone Request", this.coneLED.get());
+
+    Color detectedColor = m_colorSensor.getColor();
+    SmartDashboard.putNumber("Red", detectedColor.red);
+    SmartDashboard.putNumber("Green", detectedColor.green);
+    SmartDashboard.putNumber("Blue", detectedColor.blue);
+
+    SmartDashboard.putBoolean("Blue Detected", blueTrue);
+    SmartDashboard.putBoolean("Green Detected", greenTrue);
+    SmartDashboard.putBoolean("Red Detected", redTrue);
+    
+    SmartDashboard.putBoolean("Node Detected",nodeDetected);
+
+    redTrue = detectedColor.red > 0.5;
+    blueTrue = detectedColor.blue > 0.5;
+    greenTrue = detectedColor.green > 0.5;
+    nodeDetected = detectedColor.red > 0.34 && detectedColor.green > 0.35;
+    
   }
+
+
 }

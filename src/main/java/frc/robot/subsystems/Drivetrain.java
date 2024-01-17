@@ -162,7 +162,7 @@ public class Drivetrain extends SubsystemBase {
             CHASSIS.BALANCE_CONSTANTS.kD),
         // Close the loop on the turn rate
         this.gyro::getPitch,
-        // Setpoint is 0
+        // Setpoint is 0/
         0.7,
         // Pipe the output to the turning controls
         (output) -> this
@@ -179,17 +179,7 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Uses PID along with limelight data to turn to target
    */
-  public Command getColor() {
-    Color detectedColor = m_colorSensor.getColor();
 
-    return run(() -> {
-      this.m_colorSensor.getColor();
-      SmartDashboard.putNumber("Red", detectedColor.red);
-      SmartDashboard.putNumber("Green", detectedColor.green);
-      SmartDashboard.putNumber("Blue", detectedColor.green);
-
-    });
-  }
 
   public Command goToTarget() {
     return new PIDCommand(
@@ -564,5 +554,11 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pitch", this.gyro.getPitch());
     SmartDashboard.putNumber("Left Position", this.getLeftPosition());
     SmartDashboard.putNumber("Right Position", this.getRightPosition());
+    
+    this.m_colorSensor.getColor();
+    Color detectedColor = m_colorSensor.getColor();
+    SmartDashboard.putNumber("Red", detectedColor.red);
+    SmartDashboard.putNumber("Green", detectedColor.green);
+    SmartDashboard.putNumber("Blue", detectedColor.green);
   }
 }
