@@ -57,6 +57,7 @@ import frc.robot.util.control.SparkMaxPID;
 import frc.robot.util.devices.Gyro;
 import frc.robot.util.devices.Limelight;
 
+import org.littletonrobotics.junction.Logger;
 
 public class Drivetrain extends SubsystemBase {
   private final I2C.Port i2cPort = I2C.Port.kOnboard;
@@ -725,6 +726,12 @@ public class Drivetrain extends SubsystemBase {
       this
     )
   );
+
+  // For AdvantageKit
+  new SysIdRoutine.Config(
+  null, null, null,
+  (state) -> Logger.recordOutput("SysIdTestState", state.toString())
+);
 
   return m_sysIdRoutine;
 }
