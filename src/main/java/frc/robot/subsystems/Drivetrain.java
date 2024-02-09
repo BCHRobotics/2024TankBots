@@ -706,7 +706,7 @@ public class Drivetrain extends SubsystemBase {
 
 
   private final Velocity<Voltage> voltsPerSecond = Volts.per(Second);
-  private final Measure<Velocity<Voltage>> m_quasistaticVoltage = voltsPerSecond.of(0.25);
+  private final Measure<Velocity<Voltage>> m_quasistaticVoltage = voltsPerSecond.of(0.5);
   private final Measure<Voltage> m_dynamicVoltage = Volts.of(2.5);
   private final Measure<Time> m_timeout = Seconds.of(5);
 
@@ -717,24 +717,18 @@ public class Drivetrain extends SubsystemBase {
   }
   
  private SysIdRoutine newSysId(){
-   // Create the SysId routine
-  final SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
-    new SysIdRoutine.Config(),
+
+    SysIdRoutine m_sysIdRoutine = new SysIdRoutine(
+    new SysIdRoutine.Config(
+    m_quasistaticVoltage, m_dynamicVoltage, m_timeout, (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
     new SysIdRoutine.Mechanism(
       (voltage) -> this.runVolts(voltage),
-      null, // No log consumer, since data is recorded by URCL
+      null,
       this
     )
   );
-
-  // For AdvantageKit
-  new SysIdRoutine.Config(
-  null, null, null,
-  (state) -> Logger.recordOutput("SysIdTestState", state.toString())
-);
-
   return m_sysIdRoutine;
-}
+ }
 
 
 
