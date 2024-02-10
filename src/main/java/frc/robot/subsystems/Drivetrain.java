@@ -93,10 +93,10 @@ public class Drivetrain extends SubsystemBase {
     this.backLeftMotor.restoreFactoryDefaults();
     this.backRightMotor.restoreFactoryDefaults();
 
-    this.frontLeftMotor.setIdleMode(IdleMode.kCoast);
-    this.frontRightMotor.setIdleMode(IdleMode.kCoast);
-    this.backLeftMotor.setIdleMode(IdleMode.kCoast);
-    this.backRightMotor.setIdleMode(IdleMode.kCoast);
+    this.frontLeftMotor.setIdleMode(IdleMode.kBrake);
+    this.frontRightMotor.setIdleMode(IdleMode.kBrake);
+    this.backLeftMotor.setIdleMode(IdleMode.kBrake);
+    this.backRightMotor.setIdleMode(IdleMode.kBrake);
 
     this.frontLeftMotor.setSmartCurrentLimit(60, 20);
     this.frontRightMotor.setSmartCurrentLimit(60, 20);
@@ -353,7 +353,7 @@ public class Drivetrain extends SubsystemBase {
   /**
    * sets the chassis brake mode
    */
-  private void setBrakeMode(IdleMode idleMode) {
+  public void setBrakeMode(IdleMode idleMode) {
     this.frontLeftMotor.setIdleMode(idleMode);
     this.frontRightMotor.setIdleMode(idleMode);
     this.backLeftMotor.setIdleMode(idleMode);
@@ -706,9 +706,9 @@ public class Drivetrain extends SubsystemBase {
 
 
   private final Velocity<Voltage> voltsPerSecond = Volts.per(Second);
-  private final Measure<Velocity<Voltage>> m_quasistaticVoltage = voltsPerSecond.of(0.5);
-  private final Measure<Voltage> m_dynamicVoltage = Volts.of(2.5);
-  private final Measure<Time> m_timeout = Seconds.of(5);
+  private final Measure<Velocity<Voltage>> m_quasistaticVoltage = voltsPerSecond.of(0.4);
+  private final Measure<Voltage> m_dynamicVoltage = Volts.of(1.5);
+  private final Measure<Time> m_timeout = Seconds.of(6);
 
   
   public void runVolts(Measure<Voltage> volts) {
