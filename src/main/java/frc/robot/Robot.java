@@ -6,7 +6,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -19,7 +18,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Command autonomousCommand;
 
   private RobotContainer robotContainer;
 
@@ -66,18 +64,12 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledPeriodic() {
-    this.robotContainer.resetHeading();
-    this.robotContainer.resetPosition();
+ 
   }
 
   @Override
   public void autonomousInit() {
-    this.autonomousCommand = this.robotContainer.getAutonomousCommand();
 
-    // schedule the autonomous command (example)
-    if (this.autonomousCommand != null) {
-      this.autonomousCommand.schedule();
-    }
   }
 
   /** This function is called periodically during autonomous. */
@@ -87,15 +79,8 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // This makes sure that the autonomous stops running when
-    // teleop starts running. If you want the autonomous to
-    // continue until interrupted by another command, remove
-    // this line or comment it out.
-    if (this.autonomousCommand != null) {
-      this.autonomousCommand.cancel();
-    }
-    this.robotContainer.CHASSIS_RESET().schedule();
-    this.robotContainer.ARM_RESET().schedule();
+   
+  
   }
 
   /** This function is called periodically during operator control. */
